@@ -1,0 +1,21 @@
+1. Produce a Streaming JSON
+2. Consume a Streaming JSON
+3. Work with pagination
+4. Try out Server Sent Events
+
+
+Transformation :
+
+1. Currently we are getting 3 separate fields - founded_year, founded_month, founded_day
+
+Transform this to a single JSON Object founded using functional style to avoid mutation
+
+2. Accept the UA TimeZone
+
+If not available convert this to UTC Default
+
+
+Interface:
+
+Complex Interface - Interface + Complex Implementation
+
