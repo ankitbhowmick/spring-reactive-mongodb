@@ -18,8 +18,4 @@ class CompanyService {
     public Flux<Company> findAll() {
         return companyReactiveRepository.findAll();
     }
-
-    public Flux<Company> findAllByName(final String name) {
-        return companyReactiveRepository.findAllByName(name);
-    }
 }

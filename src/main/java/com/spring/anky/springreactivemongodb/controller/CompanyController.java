@@ -3,14 +3,19 @@ package com.spring.anky.springreactivemongodb.controller;
 import com.spring.anky.springreactivemongodb.model.Company;
 import com.spring.anky.springreactivemongodb.service.CompanyService;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.Duration;
 
 @RestController
+@Validated
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -25,8 +30,7 @@ public class CompanyController {
      **/
     @GetMapping(value = "/company/stream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<Company> findAllStreamVersion() {
-        return companyService.findAll()
-                .delayElements(Duration.ofSeconds(1)).log();
+        return companyService.findAll();
     }
 
     @GetMapping(value = "/company/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -37,8 +41,8 @@ public class CompanyController {
 
     @GetMapping("/company")
     public Flux<Company> allPseudoPagination(@RequestParam(value = "q", required = false) String q,
-                                             @RequestParam(value = "page", defaultValue = "0") long page,
-                                             @RequestParam(value = "size", defaultValue = "10") long size) {
+                                             @Valid @RequestParam(value = "page", defaultValue = "0") @Min(0) long page,
+                                             @Valid @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10000) long size) {
         return companyService.findAll()
                 .skip(page * size).take(size)
                 .log();
